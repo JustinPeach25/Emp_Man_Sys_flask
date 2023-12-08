@@ -1,4 +1,4 @@
-{% from "showlinks.html" import show_links%} 
+{% from "showlinks.html" import show_links, showsocials %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,20 +16,9 @@
             <h1 class="text-center"><i>LOGO</i></h1>
         </div>
         <div class="child child2">
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                  <a class="nav-link"  style="color:rgb(0, 75, 93);"  href="#">Instagram</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link"  style="color:rgb(0, 75, 93);" href="#">Linkedin</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link"  style="color:rgb(0, 75, 93);" href="#">facebook</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link"  style="color:rgb(0, 75, 93);" href="#">whatsapp</a>
-                </li>
-              </ul>
+
+          {{showsocials()}}
+          
         </div>
         <div class="child child3">
 
