@@ -21,7 +21,7 @@ def register():
         hashed_password = generate_password_hash(password)
 
         db = get_db()
-        db.execute('insert in admin ( name, password ) values (?,?)', [name, hashed_password])
+        db.execute('insert into admin ( name, password ) values (?, ?)', [name, hashed_password])
         db.commit()
         return redirect(url_for('index'))
 

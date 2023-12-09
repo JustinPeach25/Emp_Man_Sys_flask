@@ -7,7 +7,7 @@ def connect_to_database():
     return sql
 
 def get_db():
-    if hasattr(g, 'application_db'): 
+    if not hasattr(g, 'application_db'): 
         g.application_db = connect_to_database()
 
-        return g.application.db  
+        return g.application_db  
