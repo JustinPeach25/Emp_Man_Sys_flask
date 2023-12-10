@@ -80,8 +80,11 @@ def register():
 def dashboard():
 
     user = get_current_user()
+    db = get_db()
 
-    return render_template('dashboard.html', user = user)
+    emp_cursor = db.execute('select * from employees')
+    all_employees = emp_cursor.fetchall()
+    return render_template('dashboard.html', user = user, all_employees = all_employees)
 
 @app.route('/addnewemployee', methods = ['GET','POST'])
 def addnewemployee():
@@ -93,7 +96,7 @@ def addnewemployee():
         phone = request.form['phone']
         address = request.form['address']
         db = get_db()
-        db.execute('insert into users ( name, email, phone, address ) values (?,?,?,?)', [name, email, phone, address])
+        db.execute('insert into employees ( name, email, phone, address ) values (?,?,?,?)', [name, email, phone, address])
         db.commit()
         return redirect(url_for('dashboard'))
     return render_template('addnewemployee.html', user = user)
