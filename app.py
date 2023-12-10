@@ -33,11 +33,11 @@ def login():
     user = get_current_user()
 
     error = None
+    db = get_db()
 
     if request.method == 'POST':
         name = request.form['name']
         password = request.form['password']
-        db = get_db()
         user_cursor = db.execute('select * from users where name = ?', [name])
         user = user_cursor.fetchone()
 
@@ -46,16 +46,19 @@ def login():
                 session['user'] = user['name']
                 return redirect(url_for('dashboard'))
             else:
-                error = 'Invalid password'
+                error = 'Invalid username or password. Please enter valid credentials'
+        else:
+            error = 'Invalid username or password. Please enter valid credentials'
     return render_template('login.html', loginerror = error, user = user)
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
 
     user = get_current_user()
-
+    db = get_db()
+    
     if request.method == 'POST':
-        db = get_db()
+
         name = request.form['name']
         password = request.form['password']
 
