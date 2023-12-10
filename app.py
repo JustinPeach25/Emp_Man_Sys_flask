@@ -25,7 +25,7 @@ def get_current_user():
 @app.route('/')
 def index():
     user = get_current_user()
-    return render_template('home.html', user=user)
+    return render_template('home.html', user = user)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
