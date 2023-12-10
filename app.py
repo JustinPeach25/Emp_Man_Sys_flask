@@ -1,10 +1,16 @@
-from flask import Flask, url_for, render_template, redirect, request, session
+from flask import Flask, url_for, render_template, redirect, request, session, g
 from database import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'application_db'):
+        g.application_db.close()
 
 def get_current_user():
     user = None
