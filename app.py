@@ -1,15 +1,30 @@
-from flask import Flask, url_for, render_template, redirect, request
+from flask import Flask, url_for, render_template, redirect, request, session
 from database import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)
+
+def get_current_user():
+    user = None
+    if 'user' in session:
+        user = session['user']
+        db = get_db()
+        user_cursor = db.execute('select * from users where name = ? ', [user])
+        user = user_cursor.fetchone()
+    return user
+
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    user = get_current_user()
+    return render_template('home.html', user=user)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+
+    user = get_current_user()
 
     error = None
 
@@ -22,13 +37,17 @@ def login():
 
         if user:
             if check_password_hash(user['password'], password):
+                session['user'] = user['name']
                 return redirect(url_for('dashboard'))
             else:
                 error = 'Invalid password'
-    return render_template('login.html', loginerror = error)
+    return render_template('login.html', loginerror = error, user = user)
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
+
+    user = get_current_user()
+
     if request.method == 'POST':
         db = get_db()
         name = request.form['name']
@@ -46,25 +65,40 @@ def register():
         db.commit()
         return redirect(url_for('index'))
 
-    return render_template('register.html')
+    return render_template('register.html', user = user)
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+
+    user = get_current_user()
+
+    return render_template('dashboard.html', user = user)
 
 @app.route('/addnewemployee')
 def addnewemployee():
-    return render_template('addnewemployee.html')
+
+    user = get_current_user()
+
+    return render_template('addnewemployee.html', user = user)
 
 @app.route('/singleemployeeprofile')
 def singleemployeeprofile():
-    return render_template('singleemployeeprofile.html')
+
+    user = get_current_user()
+
+    return render_template('singleemployeeprofile.html', user = user)
 
 @app.route('/updateemployee')
 def updateemployee():
-    return render_template('updateemployee.html')
 
+    user = get_current_user()
+
+    return render_template('updateemployee.html', user = user)
+
+@app.route('/logout')
 def logout():
+
+    session.pop('user', None)
     render_template('home.html')
 
 if __name__ == '__main__':
