@@ -56,7 +56,7 @@ def register():
 
     user = get_current_user()
     db = get_db()
-    
+
     if request.method == 'POST':
 
         name = request.form['name']
@@ -83,11 +83,19 @@ def dashboard():
 
     return render_template('dashboard.html', user = user)
 
-@app.route('/addnewemployee')
+@app.route('/addnewemployee', methods = ['GET','POST'])
 def addnewemployee():
 
     user = get_current_user()
-
+    if request.method == "POST":
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+        db = get_db()
+        db.execute('insert into users ( name, email, phone, address ) values (?,?,?,?)', [name, email, phone, address])
+        db.commit()
+        return redirect(url_for('dashboard'))
     return render_template('addnewemployee.html', user = user)
 
 @app.route('/singleemployeeprofile')
