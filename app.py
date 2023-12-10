@@ -8,20 +8,41 @@ app = Flask(__name__)
 def index():
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+
+    error = None
+
+    if request.method == 'POST':
+        name = request.form['name']
+        password = request.form['password']
+        db = get_db()
+        user_cursor = db.execute('select * from users where name = ?', [name])
+        user = user_cursor.fetchone()
+
+        if user:
+            if check_password_hash(user['password'], password):
+                return redirect(url_for('dashboard'))
+            else:
+                error = 'Invalid password'
+    return render_template('login.html', loginerror = error)
 
 @app.route('/register', methods = ['GET','POST'])
 def register():
     if request.method == 'POST':
+        db = get_db()
         name = request.form['name']
         password = request.form['password']
 
         hashed_password = generate_password_hash(password)
 
-        db = get_db()
-        db.execute('insert into admin ( name, password ) values (?, ?)', [name, hashed_password])
+        dbuser_cursor = db.execute('select * from users where name = ?', [name])
+        existing_username = dbuser_cursor.fetchone()
+
+        if existing_username:
+            return render_template('register.html', registererror = 'This username already exists, please choose another.')
+
+        db.execute('insert into users ( name, password ) values (?, ?)', [name, hashed_password])
         db.commit()
         return redirect(url_for('index'))
 
