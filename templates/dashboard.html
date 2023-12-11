@@ -51,33 +51,45 @@
                 <caption><h3>LIST OF ALL EMPLOYEES</h3></caption>
                 <hr>
                 <table class="table">
-                    <thead>
-                        <tr>
-                          <th scope="col">Empoyee ID</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Address</th>
-                          <th scope="col">Update</th>
-                          <th scope="col">Delete</th>
-                          <th scope="col">View Full Profile</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for employee in all_employees %}
-                        <tr>
-                          <th scope="row">{{ employee['empid'] }}</th>
-                          <td>{{ employee['name'] }}</td>
-                          <td>{{ employee['email'] }}</td>
-                          <td>{{ employee['phone'] }}</td>
-                          <td>{{ employee['address'] }}</td>
-                          <td><button class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="#">Update</button></td>
-                          <td><button class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="#">Delete</button></td>
-                          <td><button class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="#">View Full Profile</button></td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                      </tbody>
+                  <div class="table-responsive-lg caption-top">
+                    <caption><h3>LIST OF ALL EMPLOYEES</h3></caption>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                              <th scope="col">Empoyee ID</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Phone</th>
+                              <th scope="col">Address</th>
+                              <th scope="col">Date of Birth (DOB)</th>
+                              <th scope="col">Position</th>
+                              <th scope="col">Salary</th>
+                              <th scope="col">Line Manager</th>
+                              <th scope="col">Update</th>
+                              <th scope="col">Delete</th>
+                              <th scope="col">View Full Profile</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for employee in all_employees %}
+                            <tr>
+                              <th scope="row">{{ employee['empid'] }}</th>
+                              <td>{{ employee['name'] }}</td>
+                              <td>{{ employee['email'] }}</td>
+                              <td>{{ employee['phone'] }}</td>
+                              <td>{{ employee['address'] }}</td>
+                              <td>{{ employee['dob'] }}</td>
+                              <td>{{ employee['position'] }}</td>
+                              <td>{{ employee['salary'] }}</td>
+                              <td>{{ employee['line_manager'] }}</td>
+                              <td><a class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="{{url_for('singleemployeeprofile', empid = ['empid'])}}">Update</a></td>
+                              <td><a class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="{{url_for('deleteemployee', empid = ['empid'])}}">Delete</a></td>
+                              <td><button class="btn btn-sm" style="background-color:rgb(0, 75, 93); color:whitesmoke;" href="{{url_for('singleemployeeprofile', empid = ['empid'])}}">View Full Profile</button></td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                          </tbody>
                 </table>
               </div>
         </div>
