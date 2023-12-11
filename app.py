@@ -1,4 +1,5 @@
 from flask import Flask, url_for, render_template, redirect, request, session, g
+from flask_pymongo import PyMongo
 from database import get_db
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -6,6 +7,9 @@ import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+app.config['MONGO_URI'] = "mongodb+srv://JustinPeach:justpassword1234@employeemanagement.lfmsmu6.mongodb.net/EmploymentManagement"
+
+mongo = PyMongo(app)
 
 @app.teardown_appcontext
 def close_db(error):
