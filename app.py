@@ -116,6 +116,22 @@ def updateemployee():
 
     user = get_current_user()
 
+    if request.method == 'POST':
+        empid = request.form['empid']
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+        dob = request.form['dob']
+        position = request.form['position']
+        salary = request.form['salary']
+        line_manager = request.form['line_manager']
+
+        db = get_db()
+        db.execute('update employee set name =?, email =?, phone =?, address =?, dob=?, position=?, salary=?, line_manager=? where empid =?', [name, email, phone, address, dob, position, salary, line_manager, empid])
+        db.commit()
+        return redirect(url_for('dashboard'))
+
     return render_template('updateemployee.html', user = user)
 
 @app.route('/logout')
