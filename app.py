@@ -111,6 +111,14 @@ def singleemployeeprofile(empid):
 
     return render_template('singleemployeeprofile.html', user = user, single_emp = single_emp)
 
+@app.route('/fetchone/<int:empid>')
+def fetchone(empid):
+    user = get_current_user()
+    db = get_db()
+    emp_cursor = db.execute('select * from employee where empid =?', [empid])
+    single_emp = emp_cursor.fetchone()
+    return render_template('singleemployeeprofile.html', user = user, single_emp = single_emp)
+
 @app.route('/updateemployee')
 def updateemployee():
 
